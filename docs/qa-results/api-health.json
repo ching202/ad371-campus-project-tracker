@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "databases": {
+    "sql": "up",
+    "nosql": "up"
+  }
+}

@@ -1,0 +1,294 @@
+
+> ad371-campus-project-tracker@1.0.0 demo
+> node scripts/api-demo.js
+
+
+========== SQL ==========
+
+POST /api/sql/projects -> HTTP 201
+{
+  "data": {
+    "id": "8921bb22-bb7e-481d-a499-34e87d40b63e",
+    "title": "Build a portfolio website",
+    "description": "AD371 live API demonstration",
+    "created_at": "2026-11-20T21:56:17.510Z",
+    "updated_at": "2026-11-20T21:56:17.510Z",
+    "tasks": [
+      {
+        "id": "db4047fd-c12c-4899-8933-ddbdef23e22f",
+        "title": "Design the homepage",
+        "status": "todo",
+        "created_at": "2026-11-20T21:56:17.510Z",
+        "updated_at": "2026-11-20T21:56:17.510Z"
+      }
+    ]
+  }
+}
+
+GET /api/sql/projects/8921bb22-bb7e-481d-a499-34e87d40b63e -> HTTP 200
+{
+  "data": {
+    "id": "8921bb22-bb7e-481d-a499-34e87d40b63e",
+    "title": "Build a portfolio website",
+    "description": "AD371 live API demonstration",
+    "created_at": "2026-11-20T21:56:17.510Z",
+    "updated_at": "2026-11-20T21:56:17.510Z",
+    "tasks": [
+      {
+        "id": "db4047fd-c12c-4899-8933-ddbdef23e22f",
+        "title": "Design the homepage",
+        "status": "todo",
+        "created_at": "2026-11-20T21:56:17.510Z",
+        "updated_at": "2026-11-20T21:56:17.510Z"
+      }
+    ]
+  }
+}
+
+GET /api/sql/projects -> HTTP 200
+{
+  "data": [
+    {
+      "id": "8921bb22-bb7e-481d-a499-34e87d40b63e",
+      "title": "Build a portfolio website",
+      "description": "AD371 live API demonstration",
+      "created_at": "2026-11-20T21:56:17.510Z",
+      "updated_at": "2026-11-20T21:56:17.510Z",
+      "task_count": 1
+    }
+  ],
+  "pagination": {
+    "limit": 50,
+    "offset": 0
+  }
+}
+
+PATCH /api/sql/projects/8921bb22-bb7e-481d-a499-34e87d40b63e -> HTTP 200
+{
+  "data": {
+    "id": "8921bb22-bb7e-481d-a499-34e87d40b63e",
+    "title": "Portfolio website — in progress",
+    "description": "AD371 live API demonstration",
+    "created_at": "2026-11-20T21:56:17.510Z",
+    "updated_at": "2026-11-20T21:56:17.534Z",
+    "tasks": [
+      {
+        "id": "db4047fd-c12c-4899-8933-ddbdef23e22f",
+        "title": "Design the homepage",
+        "status": "todo",
+        "created_at": "2026-11-20T21:56:17.510Z",
+        "updated_at": "2026-11-20T21:56:17.510Z"
+      }
+    ]
+  }
+}
+
+POST /api/sql/projects/8921bb22-bb7e-481d-a499-34e87d40b63e/tasks -> HTTP 201
+{
+  "data": {
+    "id": "65feba67-f691-4295-b35f-2ca647f9090b",
+    "title": "Test the mobile layout",
+    "status": "todo",
+    "created_at": "2026-11-20T21:56:17.539Z",
+    "updated_at": "2026-11-20T21:56:17.539Z"
+  }
+}
+
+PATCH /api/sql/projects/8921bb22-bb7e-481d-a499-34e87d40b63e/tasks/65feba67-f691-4295-b35f-2ca647f9090b -> HTTP 200
+{
+  "data": {
+    "id": "65feba67-f691-4295-b35f-2ca647f9090b",
+    "title": "Test the mobile layout",
+    "status": "done",
+    "created_at": "2026-11-20T21:56:17.539Z",
+    "updated_at": "2026-11-20T21:56:17.548Z"
+  }
+}
+
+GET /api/sql/projects/8921bb22-bb7e-481d-a499-34e87d40b63e/tasks/65feba67-f691-4295-b35f-2ca647f9090b -> HTTP 200
+{
+  "data": {
+    "id": "65feba67-f691-4295-b35f-2ca647f9090b",
+    "title": "Test the mobile layout",
+    "status": "done",
+    "created_at": "2026-11-20T21:56:17.539Z",
+    "updated_at": "2026-11-20T21:56:17.548Z"
+  }
+}
+
+POST /api/sql/projects/8921bb22-bb7e-481d-a499-34e87d40b63e/tasks -> HTTP 400
+{
+  "error": {
+    "code": "INVALID_INPUT",
+    "message": "Task title must contain 1–120 characters."
+  }
+}
+
+DELETE /api/sql/projects/8921bb22-bb7e-481d-a499-34e87d40b63e/tasks/65feba67-f691-4295-b35f-2ca647f9090b -> HTTP 200
+{
+  "data": {
+    "id": "65feba67-f691-4295-b35f-2ca647f9090b",
+    "deleted": true
+  }
+}
+
+DELETE /api/sql/projects/8921bb22-bb7e-481d-a499-34e87d40b63e -> HTTP 200
+{
+  "data": {
+    "id": "8921bb22-bb7e-481d-a499-34e87d40b63e",
+    "deleted": true
+  }
+}
+
+GET /api/sql/projects/8921bb22-bb7e-481d-a499-34e87d40b63e -> HTTP 404
+{
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Project not found."
+  }
+}
+
+========== NOSQL ==========
+
+POST /api/nosql/projects -> HTTP 201
+{
+  "data": {
+    "id": "95bd3216-bf2a-4ce0-b051-1091c4230aac",
+    "title": "Build a portfolio website",
+    "description": "AD371 live API demonstration",
+    "created_at": "2026-11-20T21:56:17.574Z",
+    "updated_at": "2026-11-20T21:56:17.574Z",
+    "tasks": [
+      {
+        "id": "10036c9c-22b0-458f-b4be-b4eee5378e13",
+        "title": "Design the homepage",
+        "status": "todo",
+        "created_at": "2026-11-20T21:56:17.574Z",
+        "updated_at": "2026-11-20T21:56:17.574Z"
+      }
+    ]
+  }
+}
+
+GET /api/nosql/projects/95bd3216-bf2a-4ce0-b051-1091c4230aac -> HTTP 200
+{
+  "data": {
+    "id": "95bd3216-bf2a-4ce0-b051-1091c4230aac",
+    "title": "Build a portfolio website",
+    "description": "AD371 live API demonstration",
+    "created_at": "2026-11-20T21:56:17.574Z",
+    "updated_at": "2026-11-20T21:56:17.574Z",
+    "tasks": [
+      {
+        "id": "10036c9c-22b0-458f-b4be-b4eee5378e13",
+        "title": "Design the homepage",
+        "status": "todo",
+        "created_at": "2026-11-20T21:56:17.574Z",
+        "updated_at": "2026-11-20T21:56:17.574Z"
+      }
+    ]
+  }
+}
+
+GET /api/nosql/projects -> HTTP 200
+{
+  "data": [
+    {
+      "title": "Build a portfolio website",
+      "description": "AD371 live API demonstration",
+      "created_at": "2026-11-20T21:56:17.574Z",
+      "updated_at": "2026-11-20T21:56:17.574Z",
+      "id": "95bd3216-bf2a-4ce0-b051-1091c4230aac",
+      "task_count": 1
+    }
+  ],
+  "pagination": {
+    "limit": 50,
+    "offset": 0
+  }
+}
+
+PATCH /api/nosql/projects/95bd3216-bf2a-4ce0-b051-1091c4230aac -> HTTP 200
+{
+  "data": {
+    "id": "95bd3216-bf2a-4ce0-b051-1091c4230aac",
+    "title": "Portfolio website — in progress",
+    "description": "AD371 live API demonstration",
+    "created_at": "2026-11-20T21:56:17.574Z",
+    "updated_at": "2026-11-20T21:56:17.587Z",
+    "tasks": [
+      {
+        "id": "10036c9c-22b0-458f-b4be-b4eee5378e13",
+        "title": "Design the homepage",
+        "status": "todo",
+        "created_at": "2026-11-20T21:56:17.574Z",
+        "updated_at": "2026-11-20T21:56:17.574Z"
+      }
+    ]
+  }
+}
+
+POST /api/nosql/projects/95bd3216-bf2a-4ce0-b051-1091c4230aac/tasks -> HTTP 201
+{
+  "data": {
+    "id": "c9f982ee-1dc9-463a-ac6b-3ad1c2ff9df2",
+    "title": "Test the mobile layout",
+    "status": "todo",
+    "created_at": "2026-11-20T21:56:17.589Z",
+    "updated_at": "2026-11-20T21:56:17.589Z"
+  }
+}
+
+PATCH /api/nosql/projects/95bd3216-bf2a-4ce0-b051-1091c4230aac/tasks/c9f982ee-1dc9-463a-ac6b-3ad1c2ff9df2 -> HTTP 200
+{
+  "data": {
+    "id": "c9f982ee-1dc9-463a-ac6b-3ad1c2ff9df2",
+    "title": "Test the mobile layout",
+    "status": "done",
+    "created_at": "2026-11-20T21:56:17.589Z",
+    "updated_at": "2026-11-20T21:56:17.593Z"
+  }
+}
+
+GET /api/nosql/projects/95bd3216-bf2a-4ce0-b051-1091c4230aac/tasks/c9f982ee-1dc9-463a-ac6b-3ad1c2ff9df2 -> HTTP 200
+{
+  "data": {
+    "id": "c9f982ee-1dc9-463a-ac6b-3ad1c2ff9df2",
+    "title": "Test the mobile layout",
+    "status": "done",
+    "created_at": "2026-11-20T21:56:17.589Z",
+    "updated_at": "2026-11-20T21:56:17.593Z"
+  }
+}
+
+POST /api/nosql/projects/95bd3216-bf2a-4ce0-b051-1091c4230aac/tasks -> HTTP 400
+{
+  "error": {
+    "code": "INVALID_INPUT",
+    "message": "Task title must contain 1–120 characters."
+  }
+}
+
+DELETE /api/nosql/projects/95bd3216-bf2a-4ce0-b051-1091c4230aac/tasks/c9f982ee-1dc9-463a-ac6b-3ad1c2ff9df2 -> HTTP 200
+{
+  "data": {
+    "id": "c9f982ee-1dc9-463a-ac6b-3ad1c2ff9df2",
+    "deleted": true
+  }
+}
+
+DELETE /api/nosql/projects/95bd3216-bf2a-4ce0-b051-1091c4230aac -> HTTP 200
+{
+  "data": {
+    "id": "95bd3216-bf2a-4ce0-b051-1091c4230aac",
+    "deleted": true
+  }
+}
+
+GET /api/nosql/projects/95bd3216-bf2a-4ce0-b051-1091c4230aac -> HTTP 404
+{
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Project not found."
+  }
+}

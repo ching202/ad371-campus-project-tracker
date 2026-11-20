@@ -1,0 +1,28 @@
+PASS: Create and single-query complete-document read
+{
+  _id: 'd9f24574-6311-4253-af17-f4fb9f44a2c2',
+  title: 'QA: Portfolio website',
+  description: 'Temporary verification',
+  created_at: ISODate('2026-11-20T21:34:52.934Z'),
+  updated_at: ISODate('2026-11-20T21:34:52.934Z'),
+  tasks: [
+    {
+      id: '5d646349-f736-47aa-a389-b0815b80f1fe',
+      title: 'Design the homepage',
+      status: 'todo',
+      created_at: ISODate('2026-11-20T21:34:52.934Z'),
+      updated_at: ISODate('2026-11-20T21:34:52.934Z')
+    }
+  ]
+}
+PASS: Atomic embedded task push
+PASS: Atomic embedded status update
+PASS: Project update
+PASS: Audit fix rejects a duplicate task ID within the same project (MongoDB code 121)
+PASS: Rejected duplicate leaves the document unchanged
+PASS: Blank title rejected (MongoDB code 121)
+PASS: Invalid task status rejected (MongoDB code 121)
+PASS: Individual embedded task delete
+PASS: Bounded array rejects task 101 (MongoDB code 121)
+PASS: Rejected append preserves the 100-task limit
+PASS: Project deletion also removes its embedded tasks

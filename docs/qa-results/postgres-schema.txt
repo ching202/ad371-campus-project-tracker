@@ -1,0 +1,43 @@
+                                Table "public.projects"
+   Column    |           Type           | Collation | Nullable |        Default        
+-------------+--------------------------+-----------+----------+-----------------------
+ id          | uuid                     |           | not null | gen_random_uuid()
+ title       | character varying(120)   |           | not null | 
+ description | character varying(2000)  |           | not null | ''::character varying
+ created_at  | timestamp with time zone |           | not null | CURRENT_TIMESTAMP
+ updated_at  | timestamp with time zone |           | not null | CURRENT_TIMESTAMP
+Indexes:
+    "projects_pkey" PRIMARY KEY, btree (id)
+    "projects_created_at_id_idx" btree (created_at DESC, id DESC)
+Check constraints:
+    "projects_title_check" CHECK (title::text ~ '[^[:space:]]'::text)
+Referenced by:
+    TABLE "tasks" CONSTRAINT "tasks_project_id_fkey" FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+Triggers:
+    projects_updated_at BEFORE UPDATE ON projects FOR EACH ROW EXECUTE FUNCTION set_updated_at()
+
+                               Table "public.tasks"
+   Column   |           Type           | Collation | Nullable |      Default      
+------------+--------------------------+-----------+----------+-------------------
+ id         | uuid                     |           | not null | gen_random_uuid()
+ project_id | uuid                     |           | not null | 
+ title      | character varying(120)   |           | not null | 
+ status     | text                     |           | not null | 'todo'::text
+ created_at | timestamp with time zone |           | not null | CURRENT_TIMESTAMP
+ updated_at | timestamp with time zone |           | not null | CURRENT_TIMESTAMP
+Indexes:
+    "tasks_pkey" PRIMARY KEY, btree (id)
+    "tasks_project_id_idx" btree (project_id)
+Check constraints:
+    "tasks_status_check" CHECK (status = ANY (ARRAY['todo'::text, 'in_progress'::text, 'done'::text]))
+    "tasks_title_check" CHECK (title::text ~ '[^[:space:]]'::text)
+Foreign-key constraints:
+    "tasks_project_id_fkey" FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+Triggers:
+    tasks_updated_at BEFORE UPDATE ON tasks FOR EACH ROW EXECUTE FUNCTION set_updated_at()
+
+             version             | projects | tasks 
+---------------------------------+----------+-------
+ 17.12 (Debian 17.12-1.pgdg13+1) |        0 |     0
+(1 row)
+

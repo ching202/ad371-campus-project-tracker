@@ -1,0 +1,58 @@
+SELECT 1
+CREATE FUNCTION
+BEGIN
+INSERT 0 1
+INSERT 0 1
+        project        |        task         | status 
+-----------------------+---------------------+--------
+ QA: Portfolio website | Design the homepage | todo
+(1 row)
+
+ assert_ok 
+-----------
+ 
+(1 row)
+
+UPDATE 1
+ assert_ok 
+-----------
+ 
+(1 row)
+
+UPDATE 1
+psql:/checks/sql-checks.sql:31: NOTICE:  PASS: Create and joined read return the parent and child
+psql:/checks/sql-checks.sql:38: NOTICE:  PASS: Task update is visible in the next read
+ assert_ok 
+psql:/checks/sql-checks.sql:44: NOTICE:  PASS: Project update is visible in the next read
+-----------
+ 
+(1 row)
+
+psql:/checks/sql-checks.sql:67: NOTICE:  PASS: Orphan task rejected by FK, SQLSTATE 23503
+psql:/checks/sql-checks.sql:67: NOTICE:  PASS: Invalid status rejected, SQLSTATE 23514
+psql:/checks/sql-checks.sql:67: NOTICE:  PASS: Blank title rejected, SQLSTATE 23514
+DO
+psql:/checks/sql-checks.sql:73: NOTICE:  PASS: Individual task delete removes the child
+DELETE 1
+ assert_ok 
+-----------
+ 
+(1 row)
+
+INSERT 0 1
+DELETE 1
+ assert_ok 
+-----------
+ 
+(1 row)
+
+psql:/checks/sql-checks.sql:81: NOTICE:  PASS: Deleting the parent cascades to its child
+INSERT 0 1
+INSERT 0 1
+ROLLBACK
+psql:/checks/sql-checks.sql:92: NOTICE:  PASS: ROLLBACK leaves neither the parent nor the child
+ assert_ok 
+-----------
+ 
+(1 row)
+

@@ -1,0 +1,204 @@
+AD371 guided live demo: real HTTP requests and database CLI reads.
+Each Enter runs one labeled step. Start recording with the architecture/audit files first.
+GET /health -> HTTP 200
+{
+    "status":  "ok",
+    "databases":  {
+                      "sql":  "up",
+                      "nosql":  "up"
+                  }
+}
+
+========== SQL 1/4 - create and read (video 1:30) ==========
+POST /api/sql/projects -> HTTP 201
+GET /api/sql/projects/1cff6b7b-18a7-4eef-a64c-7a520b8d9c19 -> HTTP 200
+{
+    "data":  {
+                 "id":  "1cff6b7b-18a7-4eef-a64c-7a520b8d9c19",
+                 "title":  "Video: portfolio website",
+                 "description":  "AD371 SQL demonstration",
+                 "created_at":  "2026-11-20T22:01:24.884Z",
+                 "updated_at":  "2026-11-20T22:01:24.884Z",
+                 "tasks":  [
+                               {
+                                   "id":  "7bedaa80-94df-4098-8ea7-4d9251c022c0",
+                                   "title":  "Design the homepage",
+                                   "status":  "todo",
+                                   "created_at":  "2026-11-20T22:01:24.884Z",
+                                   "updated_at":  "2026-11-20T22:01:24.884Z"
+                               }
+                           ]
+             }
+}
+GET /api/sql/projects?limit=5 -> HTTP 200
+Project list: 1 result(s) on this page.
+psql> SELECT p.title AS project, t.title AS task, t.status FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = '1cff6b7b-18a7-4eef-a64c-7a520b8d9c19';
+         project          |        task         | status 
+--------------------------+---------------------+--------
+ Video: portfolio website | Design the homepage | todo
+(1 row)
+
+
+========== SQL 2/4 - update and reject blank input ==========
+PATCH /api/sql/projects/1cff6b7b-18a7-4eef-a64c-7a520b8d9c19 -> HTTP 200
+PATCH /api/sql/projects/1cff6b7b-18a7-4eef-a64c-7a520b8d9c19/tasks/7bedaa80-94df-4098-8ea7-4d9251c022c0 -> HTTP 200
+psql> SELECT p.title AS project, t.title AS task, t.status FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = '1cff6b7b-18a7-4eef-a64c-7a520b8d9c19';
+           project            |        task         | status 
+------------------------------+---------------------+--------
+ Video: portfolio in progress | Design the homepage | done
+(1 row)
+
+POST /api/sql/projects/1cff6b7b-18a7-4eef-a64c-7a520b8d9c19/tasks -> HTTP 400
+{
+    "error":  {
+                  "code":  "INVALID_INPUT",
+                  "message":  "Task title must contain 1–120 characters."
+              }
+}
+
+========== SQL 3/4 - database foreign-key rejection ==========
+psql> INSERT INTO tasks (project_id, title) VALUES ('1c0a3eb4-5e3a-4324-80b5-276f394e4e29', 'Orphan task');
+ERROR:  23503: insert or update on table "tasks" violates foreign key constraint "tasks_project_id_fkey"
+DETAIL:  Key (project_id)=(1c0a3eb4-5e3a-4324-80b5-276f394e4e29) is not present in table "projects".
+SCHEMA NAME:  public
+TABLE NAME:  tasks
+CONSTRAINT NAME:  tasks_project_id_fkey
+LOCATION:  ri_ReportViolation, ri_triggers.c:2654
+PASS: the database rejected the orphan task.
+
+========== SQL 4/4 - delete parent, prove cascade and 404 ==========
+DELETE /api/sql/projects/1cff6b7b-18a7-4eef-a64c-7a520b8d9c19 -> HTTP 200
+{
+    "data":  {
+                 "id":  "1cff6b7b-18a7-4eef-a64c-7a520b8d9c19",
+                 "deleted":  true
+             }
+}
+psql> SELECT (SELECT count(*) FROM projects WHERE id = '1cff6b7b-18a7-4eef-a64c-7a520b8d9c19') AS projects_remaining, (SELECT count(*) FROM tasks WHERE project_id = '1cff6b7b-18a7-4eef-a64c-7a520b8d9c19') AS tasks_remaining;
+ projects_remaining | tasks_remaining 
+--------------------+-----------------
+                  0 |               0
+(1 row)
+
+GET /api/sql/projects/1cff6b7b-18a7-4eef-a64c-7a520b8d9c19 -> HTTP 404
+{
+    "error":  {
+                  "code":  "NOT_FOUND",
+                  "message":  "Project not found."
+              }
+}
+
+========== MONGO 1/4 - create and read one document (video 3:30) ==========
+POST /api/nosql/projects -> HTTP 201
+GET /api/nosql/projects/122bd42f-74c4-4e1d-8d0e-80519007bb53 -> HTTP 200
+mongosh> printjson(db.projects.findOne({ _id: '122bd42f-74c4-4e1d-8d0e-80519007bb53' }));
+{
+  _id: '122bd42f-74c4-4e1d-8d0e-80519007bb53',
+  title: 'Video: portfolio website',
+  description: 'AD371 embedded document demonstration',
+  created_at: ISODate('2026-11-20T22:01:26.010Z'),
+  updated_at: ISODate('2026-11-20T22:01:26.010Z'),
+  tasks: [
+    {
+      id: '0e300b92-8e09-4a56-b96a-e21b715881ad',
+      title: 'Design the homepage',
+      status: 'todo',
+      created_at: ISODate('2026-11-20T22:01:26.010Z'),
+      updated_at: ISODate('2026-11-20T22:01:26.010Z')
+    }
+  ]
+}
+
+========== MONGO 2/4 - atomic push and embedded update ==========
+POST /api/nosql/projects/122bd42f-74c4-4e1d-8d0e-80519007bb53/tasks -> HTTP 201
+PATCH /api/nosql/projects/122bd42f-74c4-4e1d-8d0e-80519007bb53/tasks/c4f00748-3fa3-4171-8008-a4d7c8b59365 -> HTTP 200
+PATCH /api/nosql/projects/122bd42f-74c4-4e1d-8d0e-80519007bb53 -> HTTP 200
+The store uses $push to append and $set to change the matching task.
+mongosh> printjson(db.projects.findOne({ _id: '122bd42f-74c4-4e1d-8d0e-80519007bb53' }));
+{
+  _id: '122bd42f-74c4-4e1d-8d0e-80519007bb53',
+  title: 'Video: portfolio in progress',
+  description: 'AD371 embedded document demonstration',
+  created_at: ISODate('2026-11-20T22:01:26.010Z'),
+  updated_at: ISODate('2026-11-20T22:01:26.708Z'),
+  tasks: [
+    {
+      id: '0e300b92-8e09-4a56-b96a-e21b715881ad',
+      title: 'Design the homepage',
+      status: 'todo',
+      created_at: ISODate('2026-11-20T22:01:26.010Z'),
+      updated_at: ISODate('2026-11-20T22:01:26.010Z')
+    },
+    {
+      id: 'c4f00748-3fa3-4171-8008-a4d7c8b59365',
+      title: 'Test the mobile layout',
+      status: 'done',
+      created_at: ISODate('2026-11-20T22:01:26.684Z'),
+      updated_at: ISODate('2026-11-20T22:01:26.698Z')
+    }
+  ]
+}
+
+========== MONGO 3/4 - prove the AI audit correction ==========
+mongosh> const before = db.projects.findOne({ _id: '122bd42f-74c4-4e1d-8d0e-80519007bb53' });
+try {
+  db.projects.updateOne({ _id: before._id }, {
+    $push: { tasks: { ...before.tasks[0], title: 'Duplicate task ID test' } }
+  });
+  throw new Error('Expected duplicate task ID rejection.');
+} catch (error) {
+  if (error.code !== 121) throw error;
+  print('PASS: duplicate embedded task ID rejected by validator (code 121).');
+}
+const after = db.projects.findOne({ _id: before._id });
+if (EJSON.stringify(before) !== EJSON.stringify(after)) throw new Error('Document changed after rejected update.');
+print('PASS: rejected write left the document unchanged.');
+PASS: duplicate embedded task ID rejected by validator (code 121).
+PASS: rejected write left the document unchanged.
+
+========== MONGO 4/4 - delete a task, then the whole document ==========
+DELETE /api/nosql/projects/122bd42f-74c4-4e1d-8d0e-80519007bb53/tasks/c4f00748-3fa3-4171-8008-a4d7c8b59365 -> HTTP 200
+mongosh> const p = db.projects.findOne({ _id: '122bd42f-74c4-4e1d-8d0e-80519007bb53' }); if (p.tasks.length !== 1) throw new Error('Expected one remaining task.'); printjson({ tasks_remaining: p.tasks.length });
+{
+  tasks_remaining: 1
+}
+DELETE /api/nosql/projects/122bd42f-74c4-4e1d-8d0e-80519007bb53 -> HTTP 200
+{
+    "data":  {
+                 "id":  "122bd42f-74c4-4e1d-8d0e-80519007bb53",
+                 "deleted":  true
+             }
+}
+mongosh> const count = db.projects.countDocuments({ _id: '122bd42f-74c4-4e1d-8d0e-80519007bb53' }); printjson({ documents_remaining: count }); if (count !== 0) throw new Error('Document was not deleted.');
+{
+  documents_remaining: 0
+}
+GET /api/nosql/projects/122bd42f-74c4-4e1d-8d0e-80519007bb53 -> HTTP 404
+{
+    "error":  {
+                  "code":  "NOT_FOUND",
+                  "message":  "Project not found."
+              }
+}
+
+========== QA - health and recent server logs (video 5:15) ==========
+GET /health -> HTTP 200
+{
+    "status":  "ok",
+    "databases":  {
+                      "sql":  "up",
+                      "nosql":  "up"
+                  }
+}
+Sample parameterized SQL statement from this run:
+api-1  | {"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+Recent HTTP and MongoDB commands:
+api-1  | {"event":"mongo","command":"findAndModify","collection":"projects"}
+api-1  | {"event":"http","method":"DELETE","path":"/projects/122bd42f-74c4-4e1d-8d0e-80519007bb53/tasks/c4f00748-3fa3-4171-8008-a4d7c8b59365","status":200,"duration_ms":2}
+api-1  | {"event":"mongo","command":"delete","collection":"projects"}
+api-1  | {"event":"http","method":"DELETE","path":"/projects/122bd42f-74c4-4e1d-8d0e-80519007bb53","status":200,"duration_ms":2}
+api-1  | {"event":"mongo","command":"find","collection":"projects"}
+api-1  | {"event":"http","method":"GET","path":"/api/nosql/projects/122bd42f-74c4-4e1d-8d0e-80519007bb53","status":404,"duration_ms":2}
+No unexpected_error or sql_pool_error events in this run.
+PASS: guided live demonstration completed.
+Now show docs/qa-results/README.md and explain the SQL/MongoDB tradeoff.

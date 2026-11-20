@@ -1,0 +1,23 @@
+{
+  "_id": "6cb0a75c-9d1b-46ae-9cb8-81064b0dfd02",
+  "title": "Build a portfolio website",
+  "description": "A small campus project for practicing web development.",
+  "created_at": { "$date": "2026-11-20T15:00:00.000Z" },
+  "updated_at": { "$date": "2026-11-20T15:00:00.000Z" },
+  "tasks": [
+    {
+      "id": "4b075d1d-534c-4e52-9976-e7c2b6719c8a",
+      "title": "Design the homepage",
+      "status": "todo",
+      "created_at": { "$date": "2026-11-20T15:00:00.000Z" },
+      "updated_at": { "$date": "2026-11-20T15:00:00.000Z" }
+    },
+    {
+      "id": "acdf23fa-b183-40c3-8a25-52d21d121d7c",
+      "title": "Test the mobile layout",
+      "status": "todo",
+      "created_at": { "$date": "2026-11-20T15:00:00.000Z" },
+      "updated_at": { "$date": "2026-11-20T15:00:00.000Z" }
+    }
+  ]
+}

@@ -1,0 +1,646 @@
+{"event":"ready","port":3000}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":19}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/5037acd4-20e4-477a-b928-4b3e601d45df","status":200,"duration_ms":2}
+{"event":"sql","statement":"SELECT p.*, COUNT(t.id)::int AS task_count FROM projects p LEFT JOIN tasks t ON t.project_id = p.id GROUP BY p.id ORDER BY p.created_at DESC, p.id DESC LIMIT $1 OFFSET $2","parameter_count":2}
+{"event":"http","method":"GET","path":"/projects","status":200,"duration_ms":3}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"UPDATE projects SET title = COALESCE($2, title), description = COALESCE($3, description) WHERE id = $1","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"PATCH","path":"/projects/5037acd4-20e4-477a-b928-4b3e601d45df","status":200,"duration_ms":7}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"SELECT COUNT(*)::int AS total FROM tasks WHERE project_id = $1","parameter_count":1}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4) RETURNING id, title, status, created_at, updated_at","parameter_count":4}
+{"event":"sql","statement":"UPDATE projects SET updated_at = clock_timestamp() WHERE id = $1","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects/5037acd4-20e4-477a-b928-4b3e601d45df/tasks","status":201,"duration_ms":9}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"UPDATE tasks SET title = COALESCE($3, title), status = COALESCE($4, status) WHERE project_id = $1 AND id = $2 RETURNING id, title, status, created_at, updated_at","parameter_count":4}
+{"event":"sql","statement":"UPDATE projects SET updated_at = clock_timestamp() WHERE id = $1","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"PATCH","path":"/projects/5037acd4-20e4-477a-b928-4b3e601d45df/tasks/ff0f2c04-2a7a-47a2-ae1b-8c6ed1ebcea4","status":200,"duration_ms":8}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/5037acd4-20e4-477a-b928-4b3e601d45df/tasks/ff0f2c04-2a7a-47a2-ae1b-8c6ed1ebcea4","status":200,"duration_ms":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/5037acd4-20e4-477a-b928-4b3e601d45df/tasks","status":200,"duration_ms":2}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"DELETE FROM tasks WHERE project_id = $1 AND id = $2 RETURNING id","parameter_count":2}
+{"event":"sql","statement":"UPDATE projects SET updated_at = clock_timestamp() WHERE id = $1","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"DELETE","path":"/projects/5037acd4-20e4-477a-b928-4b3e601d45df/tasks/ff0f2c04-2a7a-47a2-ae1b-8c6ed1ebcea4","status":200,"duration_ms":6}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/api/sql/projects/5037acd4-20e4-477a-b928-4b3e601d45df/tasks/ff0f2c04-2a7a-47a2-ae1b-8c6ed1ebcea4","status":404,"duration_ms":2}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/5037acd4-20e4-477a-b928-4b3e601d45df","status":200,"duration_ms":2}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/api/sql/projects/5037acd4-20e4-477a-b928-4b3e601d45df","status":404,"duration_ms":1}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/api/sql/projects/5037acd4-20e4-477a-b928-4b3e601d45df","status":404,"duration_ms":1}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/api/sql/projects/5037acd4-20e4-477a-b928-4b3e601d45df","status":404,"duration_ms":1}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":5}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/23ade583-4e7f-46df-9c13-f9f9b4ec9c97","status":200,"duration_ms":1}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/23ade583-4e7f-46df-9c13-f9f9b4ec9c97/tasks","status":200,"duration_ms":1}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/23ade583-4e7f-46df-9c13-f9f9b4ec9c97","status":200,"duration_ms":3}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":5}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":1}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":1}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":1}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":1}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":1}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"PATCH","path":"/api/sql/projects/7af3fd87-f8e7-4cef-82c9-ac8a49dbb329","status":400,"duration_ms":0}
+{"event":"http","method":"PATCH","path":"/api/sql/projects/7af3fd87-f8e7-4cef-82c9-ac8a49dbb329","status":400,"duration_ms":1}
+{"event":"http","method":"POST","path":"/api/sql/projects/7af3fd87-f8e7-4cef-82c9-ac8a49dbb329/tasks","status":400,"duration_ms":0}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/7af3fd87-f8e7-4cef-82c9-ac8a49dbb329/tasks","status":200,"duration_ms":1}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/7af3fd87-f8e7-4cef-82c9-ac8a49dbb329","status":200,"duration_ms":2}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":5}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/de6acd63-2254-4249-a6b8-9036bbb5bbca","status":200,"duration_ms":1}
+{"event":"http","method":"PATCH","path":"/api/sql/projects/de6acd63-2254-4249-a6b8-9036bbb5bbca","status":400,"duration_ms":0}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/de6acd63-2254-4249-a6b8-9036bbb5bbca","status":200,"duration_ms":2}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":4}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/38c30e91-1fe2-4425-9f76-20be4eb7f249","status":200,"duration_ms":2}
+{"event":"sql","statement":"SELECT p.*, COUNT(t.id)::int AS task_count FROM projects p LEFT JOIN tasks t ON t.project_id = p.id GROUP BY p.id ORDER BY p.created_at DESC, p.id DESC LIMIT $1 OFFSET $2","parameter_count":2}
+{"event":"http","method":"GET","path":"/projects","status":200,"duration_ms":2}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/38c30e91-1fe2-4425-9f76-20be4eb7f249","status":200,"duration_ms":2}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/api/sql/projects/637428d8-a83a-4cf4-b2b4-3e23cddf2a4b","status":404,"duration_ms":2}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"PATCH","path":"/api/sql/projects/637428d8-a83a-4cf4-b2b4-3e23cddf2a4b","status":404,"duration_ms":2}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"POST","path":"/api/sql/projects/637428d8-a83a-4cf4-b2b4-3e23cddf2a4b/tasks","status":404,"duration_ms":1}
+{"event":"http","method":"GET","path":"/api/sql/projects/not-a-uuid","status":400,"duration_ms":0}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/82245600-A7A4-41B4-AD57-5774E154AFC3","status":200,"duration_ms":1}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/api/sql/projects/82245600-a7a4-41b4-ad57-5774e154afc3/tasks/242071ef-eac7-4c66-9f4c-05829cece2ae","status":404,"duration_ms":1}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"UPDATE tasks SET title = COALESCE($3, title), status = COALESCE($4, status) WHERE project_id = $1 AND id = $2 RETURNING id, title, status, created_at, updated_at","parameter_count":4}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"PATCH","path":"/api/sql/projects/82245600-a7a4-41b4-ad57-5774e154afc3/tasks/242071ef-eac7-4c66-9f4c-05829cece2ae","status":404,"duration_ms":2}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"DELETE FROM tasks WHERE project_id = $1 AND id = $2 RETURNING id","parameter_count":2}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"DELETE","path":"/api/sql/projects/82245600-a7a4-41b4-ad57-5774e154afc3/tasks/242071ef-eac7-4c66-9f4c-05829cece2ae","status":404,"duration_ms":2}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/82245600-a7a4-41b4-ad57-5774e154afc3","status":200,"duration_ms":2}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":5}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":4}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"UPDATE tasks SET title = COALESCE($3, title), status = COALESCE($4, status) WHERE project_id = $1 AND id = $2 RETURNING id, title, status, created_at, updated_at","parameter_count":4}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"PATCH","path":"/api/sql/projects/6c2eba68-e5e6-48be-bdec-d73428d7fd64/tasks/c6a2bff1-b9f2-46d6-86da-f43b4eb22d7d","status":404,"duration_ms":2}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"DELETE FROM tasks WHERE project_id = $1 AND id = $2 RETURNING id","parameter_count":2}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"DELETE","path":"/api/sql/projects/6c2eba68-e5e6-48be-bdec-d73428d7fd64/tasks/c6a2bff1-b9f2-46d6-86da-f43b4eb22d7d","status":404,"duration_ms":2}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/294f0a91-2507-4ef1-9a7b-8dc0ec5fc1bf","status":200,"duration_ms":2}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/294f0a91-2507-4ef1-9a7b-8dc0ec5fc1bf","status":200,"duration_ms":2}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/6c2eba68-e5e6-48be-bdec-d73428d7fd64","status":200,"duration_ms":2}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":5}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":3}
+{"event":"sql","statement":"SELECT p.*, COUNT(t.id)::int AS task_count FROM projects p LEFT JOIN tasks t ON t.project_id = p.id GROUP BY p.id ORDER BY p.created_at DESC, p.id DESC LIMIT $1 OFFSET $2","parameter_count":2}
+{"event":"http","method":"GET","path":"/projects","status":200,"duration_ms":2}
+{"event":"sql","statement":"SELECT p.*, COUNT(t.id)::int AS task_count FROM projects p LEFT JOIN tasks t ON t.project_id = p.id GROUP BY p.id ORDER BY p.created_at DESC, p.id DESC LIMIT $1 OFFSET $2","parameter_count":2}
+{"event":"http","method":"GET","path":"/projects","status":200,"duration_ms":2}
+{"event":"http","method":"GET","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"GET","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"GET","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"GET","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"GET","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"GET","path":"/api/sql/projects","status":400,"duration_ms":0}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/2fafd89a-149a-4ddc-a035-6d7e2731edbb","status":200,"duration_ms":2}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/16662d9c-59ab-4e21-ab56-c8bda939131e","status":200,"duration_ms":2}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":53}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"SELECT COUNT(*)::int AS total FROM tasks WHERE project_id = $1","parameter_count":1}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4) RETURNING id, title, status, created_at, updated_at","parameter_count":4}
+{"event":"sql","statement":"UPDATE projects SET updated_at = clock_timestamp() WHERE id = $1","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects/e9fb4a35-21f5-40f6-a5e2-0e1002dbe57c/tasks","status":201,"duration_ms":14}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"SELECT COUNT(*)::int AS total FROM tasks WHERE project_id = $1","parameter_count":1}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"POST","path":"/api/sql/projects/e9fb4a35-21f5-40f6-a5e2-0e1002dbe57c/tasks","status":409,"duration_ms":25}
+{"event":"sql","statement":"SELECT COUNT(*)::int AS total FROM tasks WHERE project_id = $1","parameter_count":1}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"POST","path":"/api/sql/projects/e9fb4a35-21f5-40f6-a5e2-0e1002dbe57c/tasks","status":409,"duration_ms":26}
+{"event":"sql","statement":"SELECT COUNT(*)::int AS total FROM tasks WHERE project_id = $1","parameter_count":1}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"POST","path":"/api/sql/projects/e9fb4a35-21f5-40f6-a5e2-0e1002dbe57c/tasks","status":409,"duration_ms":26}
+{"event":"sql","statement":"SELECT COUNT(*)::int AS total FROM tasks WHERE project_id = $1","parameter_count":1}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"POST","path":"/api/sql/projects/e9fb4a35-21f5-40f6-a5e2-0e1002dbe57c/tasks","status":409,"duration_ms":28}
+{"event":"sql","statement":"SELECT COUNT(*)::int AS total FROM tasks WHERE project_id = $1","parameter_count":1}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"POST","path":"/api/sql/projects/e9fb4a35-21f5-40f6-a5e2-0e1002dbe57c/tasks","status":409,"duration_ms":28}
+{"event":"sql","statement":"SELECT COUNT(*)::int AS total FROM tasks WHERE project_id = $1","parameter_count":1}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"POST","path":"/api/sql/projects/e9fb4a35-21f5-40f6-a5e2-0e1002dbe57c/tasks","status":409,"duration_ms":28}
+{"event":"sql","statement":"SELECT COUNT(*)::int AS total FROM tasks WHERE project_id = $1","parameter_count":1}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"POST","path":"/api/sql/projects/e9fb4a35-21f5-40f6-a5e2-0e1002dbe57c/tasks","status":409,"duration_ms":25}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/e9fb4a35-21f5-40f6-a5e2-0e1002dbe57c","status":200,"duration_ms":4}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/e9fb4a35-21f5-40f6-a5e2-0e1002dbe57c","status":200,"duration_ms":3}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":7}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"UPDATE tasks SET title = COALESCE($3, title), status = COALESCE($4, status) WHERE project_id = $1 AND id = $2 RETURNING id, title, status, created_at, updated_at","parameter_count":4}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"UPDATE projects SET updated_at = clock_timestamp() WHERE id = $1","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"PATCH","path":"/projects/db044587-919c-4943-844c-8c6c11755a81/tasks/7ce7cc33-a97e-4f7f-a7f6-bed173d54019","status":200,"duration_ms":6}
+{"event":"sql","statement":"UPDATE tasks SET title = COALESCE($3, title), status = COALESCE($4, status) WHERE project_id = $1 AND id = $2 RETURNING id, title, status, created_at, updated_at","parameter_count":4}
+{"event":"sql","statement":"UPDATE projects SET updated_at = clock_timestamp() WHERE id = $1","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"PATCH","path":"/projects/db044587-919c-4943-844c-8c6c11755a81/tasks/7ce7cc33-a97e-4f7f-a7f6-bed173d54019","status":200,"duration_ms":10}
+{"event":"sql","statement":"UPDATE projects SET title = COALESCE($2, title), description = COALESCE($3, description) WHERE id = $1","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"PATCH","path":"/projects/db044587-919c-4943-844c-8c6c11755a81","status":200,"duration_ms":14}
+{"event":"sql","statement":"UPDATE projects SET title = COALESCE($2, title), description = COALESCE($3, description) WHERE id = $1","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"PATCH","path":"/projects/db044587-919c-4943-844c-8c6c11755a81","status":200,"duration_ms":19}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/db044587-919c-4943-844c-8c6c11755a81","status":200,"duration_ms":1}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/db044587-919c-4943-844c-8c6c11755a81","status":200,"duration_ms":2}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":4}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/61004188-a905-4662-b130-054878317573","status":200,"duration_ms":2}
+{"event":"sql","statement":"ROLLBACK","parameter_count":0}
+{"event":"http","method":"POST","path":"/api/sql/projects/61004188-a905-4662-b130-054878317573/tasks","status":404,"duration_ms":2}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/api/sql/projects/61004188-a905-4662-b130-054878317573","status":404,"duration_ms":1}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/api/sql/projects/61004188-a905-4662-b130-054878317573","status":404,"duration_ms":1}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":5}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/2ca97b22-8761-4bfc-b1ce-3357da052207","status":200,"duration_ms":3}
+{"event":"mongo","command":"aggregate","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects","status":200,"duration_ms":3}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"PATCH","path":"/projects/2ca97b22-8761-4bfc-b1ce-3357da052207","status":200,"duration_ms":2}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects/2ca97b22-8761-4bfc-b1ce-3357da052207/tasks","status":201,"duration_ms":2}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"PATCH","path":"/projects/2ca97b22-8761-4bfc-b1ce-3357da052207/tasks/086a73e0-0f7e-4915-bdd2-1b20b8998101","status":200,"duration_ms":2}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/2ca97b22-8761-4bfc-b1ce-3357da052207/tasks/086a73e0-0f7e-4915-bdd2-1b20b8998101","status":200,"duration_ms":2}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/2ca97b22-8761-4bfc-b1ce-3357da052207/tasks","status":200,"duration_ms":1}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/2ca97b22-8761-4bfc-b1ce-3357da052207/tasks/086a73e0-0f7e-4915-bdd2-1b20b8998101","status":200,"duration_ms":3}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/api/nosql/projects/2ca97b22-8761-4bfc-b1ce-3357da052207/tasks/086a73e0-0f7e-4915-bdd2-1b20b8998101","status":404,"duration_ms":2}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/2ca97b22-8761-4bfc-b1ce-3357da052207","status":200,"duration_ms":3}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/api/nosql/projects/2ca97b22-8761-4bfc-b1ce-3357da052207","status":404,"duration_ms":2}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/api/nosql/projects/2ca97b22-8761-4bfc-b1ce-3357da052207","status":404,"duration_ms":1}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/api/nosql/projects/2ca97b22-8761-4bfc-b1ce-3357da052207","status":404,"duration_ms":1}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":2}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/cf12a136-4f79-4526-ab96-c2c4d9b690db","status":200,"duration_ms":2}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/cf12a136-4f79-4526-ab96-c2c4d9b690db/tasks","status":200,"duration_ms":2}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/cf12a136-4f79-4526-ab96-c2c4d9b690db","status":200,"duration_ms":2}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":2}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":1}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"PATCH","path":"/api/nosql/projects/427d0fa9-06fd-47a2-8dae-d13a3970b06f","status":400,"duration_ms":0}
+{"event":"http","method":"PATCH","path":"/api/nosql/projects/427d0fa9-06fd-47a2-8dae-d13a3970b06f","status":400,"duration_ms":0}
+{"event":"http","method":"POST","path":"/api/nosql/projects/427d0fa9-06fd-47a2-8dae-d13a3970b06f/tasks","status":400,"duration_ms":0}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/427d0fa9-06fd-47a2-8dae-d13a3970b06f/tasks","status":200,"duration_ms":1}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/427d0fa9-06fd-47a2-8dae-d13a3970b06f","status":200,"duration_ms":1}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":2}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/ec20019d-1021-47f8-bb26-c0762a66656d","status":200,"duration_ms":2}
+{"event":"http","method":"PATCH","path":"/api/nosql/projects/ec20019d-1021-47f8-bb26-c0762a66656d","status":400,"duration_ms":0}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/ec20019d-1021-47f8-bb26-c0762a66656d","status":200,"duration_ms":1}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":2}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/ea59b0b7-17b8-412a-8ac0-d87cf9f33cd9","status":200,"duration_ms":1}
+{"event":"mongo","command":"aggregate","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects","status":200,"duration_ms":2}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/ea59b0b7-17b8-412a-8ac0-d87cf9f33cd9","status":200,"duration_ms":1}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/api/nosql/projects/ec1d0d7c-0e1b-48f7-9772-2e5b3557e83b","status":404,"duration_ms":2}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"PATCH","path":"/api/nosql/projects/ec1d0d7c-0e1b-48f7-9772-2e5b3557e83b","status":404,"duration_ms":2}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"POST","path":"/api/nosql/projects/ec1d0d7c-0e1b-48f7-9772-2e5b3557e83b/tasks","status":404,"duration_ms":2}
+{"event":"http","method":"GET","path":"/api/nosql/projects/not-a-uuid","status":400,"duration_ms":0}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":1}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/0CC36C33-5849-4919-ADDB-69E4B9DB9B06","status":200,"duration_ms":1}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/api/nosql/projects/0cc36c33-5849-4919-addb-69e4b9db9b06/tasks/0d8b8b85-2cca-46d3-b84d-6e6e9de0b2ed","status":404,"duration_ms":1}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"PATCH","path":"/api/nosql/projects/0cc36c33-5849-4919-addb-69e4b9db9b06/tasks/0d8b8b85-2cca-46d3-b84d-6e6e9de0b2ed","status":404,"duration_ms":1}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/api/nosql/projects/0cc36c33-5849-4919-addb-69e4b9db9b06/tasks/0d8b8b85-2cca-46d3-b84d-6e6e9de0b2ed","status":404,"duration_ms":1}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/0cc36c33-5849-4919-addb-69e4b9db9b06","status":200,"duration_ms":2}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":2}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":1}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"PATCH","path":"/api/nosql/projects/cccc3701-48c0-4323-a68c-6202661a6524/tasks/49a6aeae-52b2-4fa5-8259-d97057d99c60","status":404,"duration_ms":1}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/api/nosql/projects/cccc3701-48c0-4323-a68c-6202661a6524/tasks/49a6aeae-52b2-4fa5-8259-d97057d99c60","status":404,"duration_ms":1}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/4617f933-2bbf-46c0-af50-87e50875033f","status":200,"duration_ms":1}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/4617f933-2bbf-46c0-af50-87e50875033f","status":200,"duration_ms":1}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/cccc3701-48c0-4323-a68c-6202661a6524","status":200,"duration_ms":1}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":2}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":2}
+{"event":"mongo","command":"aggregate","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects","status":200,"duration_ms":2}
+{"event":"mongo","command":"aggregate","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects","status":200,"duration_ms":2}
+{"event":"http","method":"GET","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"GET","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"GET","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"GET","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"GET","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"http","method":"GET","path":"/api/nosql/projects","status":400,"duration_ms":0}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/95e04fa8-485d-4ae9-9d8f-d08384a5e62f","status":200,"duration_ms":1}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/0a26d315-a8c3-492a-a239-cd97b812acf8","status":200,"duration_ms":1}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":3}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects/1bd8445e-0dfb-4463-85ce-db41951c8bab/tasks","status":201,"duration_ms":5}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"POST","path":"/api/nosql/projects/1bd8445e-0dfb-4463-85ce-db41951c8bab/tasks","status":409,"duration_ms":10}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"POST","path":"/api/nosql/projects/1bd8445e-0dfb-4463-85ce-db41951c8bab/tasks","status":409,"duration_ms":11}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"POST","path":"/api/nosql/projects/1bd8445e-0dfb-4463-85ce-db41951c8bab/tasks","status":409,"duration_ms":13}
+{"event":"http","method":"POST","path":"/api/nosql/projects/1bd8445e-0dfb-4463-85ce-db41951c8bab/tasks","status":409,"duration_ms":16}
+{"event":"http","method":"POST","path":"/api/nosql/projects/1bd8445e-0dfb-4463-85ce-db41951c8bab/tasks","status":409,"duration_ms":16}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"POST","path":"/api/nosql/projects/1bd8445e-0dfb-4463-85ce-db41951c8bab/tasks","status":409,"duration_ms":20}
+{"event":"http","method":"POST","path":"/api/nosql/projects/1bd8445e-0dfb-4463-85ce-db41951c8bab/tasks","status":409,"duration_ms":19}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/1bd8445e-0dfb-4463-85ce-db41951c8bab","status":200,"duration_ms":4}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/1bd8445e-0dfb-4463-85ce-db41951c8bab","status":200,"duration_ms":2}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":2}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"PATCH","path":"/projects/f4b6a52d-afa3-4b95-ad03-813e976802bd/tasks/94070313-4115-4bbe-9db9-077c94c195c5","status":200,"duration_ms":4}
+{"event":"http","method":"PATCH","path":"/projects/f4b6a52d-afa3-4b95-ad03-813e976802bd/tasks/94070313-4115-4bbe-9db9-077c94c195c5","status":200,"duration_ms":3}
+{"event":"http","method":"PATCH","path":"/projects/f4b6a52d-afa3-4b95-ad03-813e976802bd","status":200,"duration_ms":3}
+{"event":"http","method":"PATCH","path":"/projects/f4b6a52d-afa3-4b95-ad03-813e976802bd","status":200,"duration_ms":3}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/f4b6a52d-afa3-4b95-ad03-813e976802bd","status":200,"duration_ms":1}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/f4b6a52d-afa3-4b95-ad03-813e976802bd","status":200,"duration_ms":1}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":1}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/63f79ebe-e8fa-4350-b311-dbb03f11a20f","status":200,"duration_ms":1}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"POST","path":"/api/nosql/projects/63f79ebe-e8fa-4350-b311-dbb03f11a20f/tasks","status":404,"duration_ms":2}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/api/nosql/projects/63f79ebe-e8fa-4350-b311-dbb03f11a20f","status":404,"duration_ms":1}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/api/nosql/projects/63f79ebe-e8fa-4350-b311-dbb03f11a20f","status":404,"duration_ms":1}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":1}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/e81a5e44-4dcc-44e0-a8d2-5d4f1b76367f","status":200,"duration_ms":1}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":400,"duration_ms":1}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":413,"duration_ms":1}
+{"event":"http","method":"POST","path":"/api/sql/projects","status":415,"duration_ms":0}
+{"event":"http","method":"GET","path":"/api/unknown/projects","status":404,"duration_ms":0}
+{"event":"http","method":"GET","path":"/missing-route","status":404,"duration_ms":0}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"INSERT INTO projects(id, title, description) VALUES ($1, $2, $3)","parameter_count":3}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4)","parameter_count":4}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":6}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/b9abe478-b62b-4f9b-b1a3-a2d68c9edeb7","status":200,"duration_ms":2}
+{"event":"sql","statement":"SELECT p.*, COUNT(t.id)::int AS task_count FROM projects p LEFT JOIN tasks t ON t.project_id = p.id GROUP BY p.id ORDER BY p.created_at DESC, p.id DESC LIMIT $1 OFFSET $2","parameter_count":2}
+{"event":"http","method":"GET","path":"/projects","status":200,"duration_ms":2}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"UPDATE projects SET title = COALESCE($2, title), description = COALESCE($3, description) WHERE id = $1","parameter_count":3}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"PATCH","path":"/projects/b9abe478-b62b-4f9b-b1a3-a2d68c9edeb7","status":200,"duration_ms":4}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"SELECT COUNT(*)::int AS total FROM tasks WHERE project_id = $1","parameter_count":1}
+{"event":"sql","statement":"INSERT INTO tasks(id, project_id, title, status) VALUES ($1, $2, $3, $4) RETURNING id, title, status, created_at, updated_at","parameter_count":4}
+{"event":"sql","statement":"UPDATE projects SET updated_at = clock_timestamp() WHERE id = $1","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"POST","path":"/projects/b9abe478-b62b-4f9b-b1a3-a2d68c9edeb7/tasks","status":201,"duration_ms":7}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"UPDATE tasks SET title = COALESCE($3, title), status = COALESCE($4, status) WHERE project_id = $1 AND id = $2 RETURNING id, title, status, created_at, updated_at","parameter_count":4}
+{"event":"sql","statement":"UPDATE projects SET updated_at = clock_timestamp() WHERE id = $1","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"PATCH","path":"/projects/b9abe478-b62b-4f9b-b1a3-a2d68c9edeb7/tasks/6b80a36b-b6b1-4534-9a28-149d9376297c","status":200,"duration_ms":5}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/projects/b9abe478-b62b-4f9b-b1a3-a2d68c9edeb7/tasks/6b80a36b-b6b1-4534-9a28-149d9376297c","status":200,"duration_ms":2}
+{"event":"http","method":"POST","path":"/api/sql/projects/b9abe478-b62b-4f9b-b1a3-a2d68c9edeb7/tasks","status":400,"duration_ms":1}
+{"event":"sql","statement":"BEGIN","parameter_count":0}
+{"event":"sql","statement":"SELECT id FROM projects WHERE id = $1 FOR UPDATE","parameter_count":1}
+{"event":"sql","statement":"DELETE FROM tasks WHERE project_id = $1 AND id = $2 RETURNING id","parameter_count":2}
+{"event":"sql","statement":"UPDATE projects SET updated_at = clock_timestamp() WHERE id = $1","parameter_count":1}
+{"event":"sql","statement":"COMMIT","parameter_count":0}
+{"event":"http","method":"DELETE","path":"/projects/b9abe478-b62b-4f9b-b1a3-a2d68c9edeb7/tasks/6b80a36b-b6b1-4534-9a28-149d9376297c","status":200,"duration_ms":5}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/projects/b9abe478-b62b-4f9b-b1a3-a2d68c9edeb7","status":200,"duration_ms":2}
+{"event":"sql","statement":"SELECT p.*, COALESCE( jsonb_agg(to_jsonb(t) - 'project_id' ORDER BY t.created_at, t.id) FILTER (WHERE t.id IS NOT NULL), '[]'::jsonb ) AS tasks FROM projects p LEFT JOIN tasks t ON t.project_id = p.id WHERE p.id = $1 GROUP BY p.id","parameter_count":1}
+{"event":"http","method":"GET","path":"/api/sql/projects/b9abe478-b62b-4f9b-b1a3-a2d68c9edeb7","status":404,"duration_ms":2}
+{"event":"sql","statement":"DELETE FROM projects WHERE id = $1 RETURNING id","parameter_count":1}
+{"event":"http","method":"DELETE","path":"/api/sql/projects/b9abe478-b62b-4f9b-b1a3-a2d68c9edeb7","status":404,"duration_ms":2}
+{"event":"mongo","command":"insert","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects","status":201,"duration_ms":3}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/a8566be5-bee3-4af4-8f7c-e6300a2bbee8","status":200,"duration_ms":3}
+{"event":"mongo","command":"aggregate","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects","status":200,"duration_ms":4}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"PATCH","path":"/projects/a8566be5-bee3-4af4-8f7c-e6300a2bbee8","status":200,"duration_ms":3}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"POST","path":"/projects/a8566be5-bee3-4af4-8f7c-e6300a2bbee8/tasks","status":201,"duration_ms":3}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"PATCH","path":"/projects/a8566be5-bee3-4af4-8f7c-e6300a2bbee8/tasks/3e7d7478-c064-442b-a60d-d4d4a4c27335","status":200,"duration_ms":3}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/projects/a8566be5-bee3-4af4-8f7c-e6300a2bbee8/tasks/3e7d7478-c064-442b-a60d-d4d4a4c27335","status":200,"duration_ms":2}
+{"event":"http","method":"POST","path":"/api/nosql/projects/a8566be5-bee3-4af4-8f7c-e6300a2bbee8/tasks","status":400,"duration_ms":1}
+{"event":"mongo","command":"findAndModify","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/a8566be5-bee3-4af4-8f7c-e6300a2bbee8/tasks/3e7d7478-c064-442b-a60d-d4d4a4c27335","status":200,"duration_ms":3}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/projects/a8566be5-bee3-4af4-8f7c-e6300a2bbee8","status":200,"duration_ms":3}
+{"event":"mongo","command":"find","collection":"projects"}
+{"event":"http","method":"GET","path":"/api/nosql/projects/a8566be5-bee3-4af4-8f7c-e6300a2bbee8","status":404,"duration_ms":3}
+{"event":"mongo","command":"delete","collection":"projects"}
+{"event":"http","method":"DELETE","path":"/api/nosql/projects/a8566be5-bee3-4af4-8f7c-e6300a2bbee8","status":404,"duration_ms":2}

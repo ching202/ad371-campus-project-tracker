@@ -1,0 +1,43 @@
+
+> ad371-campus-project-tracker@1.0.0 test
+> node --test --test-concurrency=1 test/api.test.js
+
+✔ Health endpoint verifies both real databases (88.311824ms)
+✔ sql: complete project/task CRUD and underlying database state (100.414424ms)
+✔ sql: an empty project reads with an empty tasks array (16.13452ms)
+✔ sql: malformed, blank, long, and operator-shaped inputs are rejected (41.120403ms)
+✔ sql: Unicode character limits and title trimming match the contract (13.590291ms)
+✔ sql: injection-like text is stored as literal data (15.198681ms)
+✔ sql: missing and malformed IDs return 404 and 400 (27.62186ms)
+✔ sql: tasks cannot be modified through another project's URL (27.691654ms)
+✔ sql: pagination is bounded and rejects malformed values (30.69794ms)
+✔ sql: concurrent appends cannot exceed the 100-task limit (105.379961ms)
+✔ sql: simultaneous partial task and project edits are preserved (38.898204ms)
+✔ sql: parent deletion racing a task append leaves no orphan (17.863115ms)
+✔ nosql: complete project/task CRUD and underlying database state (54.526277ms)
+✔ nosql: an empty project reads with an empty tasks array (15.200706ms)
+✔ nosql: malformed, blank, long, and operator-shaped inputs are rejected (30.136456ms)
+✔ nosql: Unicode character limits and title trimming match the contract (8.965184ms)
+✔ nosql: injection-like text is stored as literal data (11.641536ms)
+✔ nosql: missing and malformed IDs return 404 and 400 (24.313158ms)
+✔ nosql: tasks cannot be modified through another project's URL (17.160764ms)
+✔ nosql: pagination is bounded and rejects malformed values (22.728891ms)
+✔ nosql: concurrent appends cannot exceed the 100-task limit (37.884294ms)
+✔ nosql: simultaneous partial task and project edits are preserved (15.029107ms)
+✔ nosql: parent deletion racing a task append leaves no orphan (12.509053ms)
+✔ SQL store rolls back parent and earlier children after a database failure; releases clients (22.682864ms)
+✔ MongoDB complete-project adapter read issues exactly one find command (7.396032ms)
+✔ Malformed JSON, oversized requests, wrong content type, and unknown routes have JSON errors (11.027679ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 973.274694
+npm notice
+npm notice New major version of npm available! 11.19.1 -> 12.2.3
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.3
+npm notice To update run: npm install -g npm@12.2.3
+npm notice

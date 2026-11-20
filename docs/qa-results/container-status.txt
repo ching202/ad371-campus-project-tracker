@@ -1,0 +1,3 @@
+api|running|healthy
+mongo|running|healthy
+postgres|running|healthy
